@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "project"
+version = "0.0.0"
+description = "CS 5490 Spring 2023 @ The University of Utah"
+readme = "readme.md"
+license = { file = "license.md" }
+authors = [
+    { name = "Gates Lamb ", email = "u1033920@utah.edu" },
+    { name = "Sam Smith", email = "u0629883@utah.edu" },
+    { name = "Yifei Sun", email = "u1298569@utah.edu" },
+]
+classifiers = [
+    "Environment :: Console",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3"
+dependencies = ["click", "click-option-group", "rich"]
+
+[project.urls]
+Repository = "https://github.com/StepBroBD/CS5490-Project"
+
+[project.scripts]
+project = "project.cli:cli"
