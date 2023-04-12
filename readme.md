@@ -35,3 +35,9 @@ Yifei Sun u1298569@utah.edu
    ```shell
    pip install -e . # then you can run the project with `project`
    ```
+
+## Resources
+
+- [Python Socket Server](https://docs.python.org/3/library/socketserver.html)
+- [Click](https://click.palletsprojects.com/en/latest/)
+- [Click Option Group](https://click-option-group.readthedocs.io/en/latest/)
