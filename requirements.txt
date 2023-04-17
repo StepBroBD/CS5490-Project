@@ -21,7 +21,7 @@ paramiko==2.7.2
 Pillow==9.3.0
 pip==23.0.1
 pipenv==2020.11.4
-protobuf==3.19.3
+protobuf==3.19.5
 pycdlib==1.13.0
 pycparser==2.20
 pycryptodome==3.17
