@@ -11,7 +11,7 @@ crayons==0.4.0
 crypto==1.4.1
 cryptography==3.4.7
 distlib==0.3.1
-Django==4.1.4
+Django==4.1.7
 filelock==3.0.12
 idna==3.2
 image==1.5.33
