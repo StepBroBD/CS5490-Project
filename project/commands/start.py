@@ -31,7 +31,7 @@ def server(host: str, port: int) -> None:
     """
     Start the server.
     """
-    print(f"Listening on {host}:{port}...")
+    print(f"[{host}:{port}] Starting server...")
     with socketserver.TCPServer((host, port), RequestHandler) as server:
         server.serve_forever()
 
