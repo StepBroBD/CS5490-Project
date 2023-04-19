@@ -13,7 +13,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         self.method, self.path, self.version = parse_request(self.data)
         self.headers = parse_headers(self.data)
 
-        self.log()
+        self.log(f"Headers: {self.headers}")
         self.request.sendall(form_response(
             self.method, self.path, self.version, False, "Hello World"
         ))
