@@ -1,14 +1,14 @@
 import socketserver
-from typing import Self, Tuple
+from typing import Tuple
 from project.common import recv_all, send_all
 from rich import print
 
 
 class RequestHandler(socketserver.BaseRequestHandler):
-    def log(self: Self, message: str = "") -> None:
+    def log(self, message: str = "") -> None:
         print(f"[{self.client_address[0]}:{self.client_address[1]}] [{self.method} {self.path} {self.version}] {message}")
 
-    def handle(self: Self) -> None:
+    def handle(self) -> None:
         self.data = recv_all(self.request)
         self.method, self.path, self.version = parse_request(self.data)
         self.headers = parse_headers(self.data)
