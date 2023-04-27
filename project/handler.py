@@ -26,12 +26,14 @@ class RequestHandler(socketserver.BaseRequestHandler):
         self.method, self.path, self.version = parse_request(self.data)
         self.headers = parse_headers(self.data)
 
-        # self.log(f"Headers: {self.headers}")
+        self.log(f"Headers: {self.headers}")
 
         # length of headers in bytes for analysis
-        headers_length = len(self.headers['user-agent']) + len(self.headers['sec-ch-ua']) + len(self.headers['accept'])
+        headers_length = len(self.headers['user-agent']) + len(
+            self.headers['sec-ch-ua']) + len(self.headers['accept'])
         # add request to dictionary
-        requests[self.client_address[0] + ":" + str(self.client_address[1])] = headers_length
+        requests[self.client_address[0] + ":" +
+                 str(self.client_address[1])] = headers_length
 
         print(math.trunc(time.time() - start) % 3)
 
@@ -96,7 +98,7 @@ def parse_headers(data: bytes) -> dict:
     for line in lines[1:]:
         if line and b":" in line:
             key, value = line.split(b":", 1)
-            headers[key.decode()] = value.decode()
+            headers[key.decode().lower()] = value.decode().lower()
     return headers
 
 
