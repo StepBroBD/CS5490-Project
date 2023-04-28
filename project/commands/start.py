@@ -97,6 +97,15 @@ def attack(host: str, port: int, count: int) -> None:
                      for _ in range(random.randint(1, 10))]
                 )
 
+        # if the method is POST, add a body, generate a random json payload
+        if method == "POST":
+            headers["Content-Type"] = "application/json"
+            body = "".join(
+                [chr(random.randint(32, 126))
+                 for _ in range(random.randint(1, 100))]
+            )
+            headers["Content-Length"] = len(body)
+
         # form the request inline
         request = f"{method} {endpoint} {version}\r\n"
         for header in headers.keys():
@@ -106,8 +115,8 @@ def attack(host: str, port: int, count: int) -> None:
         # send the request
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.connect((host, port))
-            send_all(sock, request.encode("utf-8"))
-            response = recv_all(sock).decode("utf-8")
+            send_all(sock, request.encode())
+            response = recv_all(sock).decode().split("\r\n")
             print(
                 f"{sock.getsockname()[0]}:{sock.getsockname()[1]} -> {host}:{port} [{i+1}/{count}] {method} {endpoint} {version} Responded: {response}"
             )
