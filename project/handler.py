@@ -39,7 +39,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
 
         # print(math.trunc(time.time() - start) % 3)
 
-        # check blacklist
+        # if the header size is in the blacklist, block the request
         if headers_length in blacklist:
             self.request.sendall(form_response(
                 self.method, self.path, self.version, True, "Go Away"
@@ -48,13 +48,16 @@ class RequestHandler(socketserver.BaseRequestHandler):
             # add header lengths to dictionary
             if headers_length in size_counts.keys():
                 size_counts[headers_length] = size_counts[headers_length] + 1
-                if math.trunc(time.time() - start) % 3 == 0:
+                # check the count dictionary every 2 seconds
+                if math.trunc(time.time() - start) % 2 == 0:
                     for c in size_counts.keys():
-                        if size_counts[c] > 3:
+                        # if we have seen a specific header size come in more than 50 
+                        # times in the last two seconds, add to blacklist
+                        if size_counts[c] > 50:
                             blacklist.append(c)
                     size_counts.clear()
             else:
-                # haven't seen before send ok response
+                # haven't seen this header size before - send ok response
                 size_counts[headers_length] = 1
                 times[headers_length] = time.time()
             self.request.sendall(form_response(
