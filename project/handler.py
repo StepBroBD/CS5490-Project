@@ -1,9 +1,10 @@
 import socketserver
 from typing import Tuple
-from project.common import recv_all, send_all
-from rich import print
 import time
 import math
+from project.common import recv_all, send_all
+from rich import print
+
 
 # dictionary of requests
 requests = {}
@@ -25,8 +26,9 @@ class RequestHandler(socketserver.BaseRequestHandler):
         self.data = recv_all(self.request)
         self.method, self.path, self.version = parse_request(self.data)
         self.headers = parse_headers(self.data)
+        self.payload = parse_payload(self.data)
 
-        self.log(f"Headers: {self.headers}")
+        self.log(f"Headers: {self.headers}, Payload: {self.payload}")
 
         # length of headers in bytes for analysis
         headers_length = len(self.headers['user-agent']) + len(
@@ -35,7 +37,7 @@ class RequestHandler(socketserver.BaseRequestHandler):
         requests[self.client_address[0] + ":" +
                  str(self.client_address[1])] = headers_length
 
-        print(math.trunc(time.time() - start) % 3)
+        # print(math.trunc(time.time() - start) % 3)
 
         # check blacklist
         if headers_length in blacklist:
@@ -98,8 +100,14 @@ def parse_headers(data: bytes) -> dict:
     for line in lines[1:]:
         if line and b":" in line:
             key, value = line.split(b":", 1)
-            headers[key.decode().lower()] = value.decode().lower()
+            headers[
+                key.decode().lower().strip()
+            ] = value.decode().lower().strip()
     return headers
+
+
+def parse_payload(data: bytes) -> bytes:
+    return data.split(b"\r\n\r\n")[-1]
 
 
 def form_response(method: str, path: str, version: str, blocked: bool, message: str) -> bytes:
@@ -107,22 +115,14 @@ def form_response(method: str, path: str, version: str, blocked: bool, message: 
     Form a response from the request
     """
     if blocked:
-        # original
-        # response = f"{version} 403 Forbidden\r\n"
-        # response += "Content-Type: text/html\r\n"
-        # response += "Content-Length: 0\r\n"
-        # response += "\r\n"
-
-        # modified
         response = f"{version} 403 Forbidden\r\n"
-        response += "Content-Type: text/html\r\n"
-        response += f"Content-Length: {len(message)}\r\n"
-        response += "\r\n"
-        response += message
+
     else:
         response = f"{version} 200 OK\r\n"
-        response += "Content-Type: text/html\r\n"
-        response += f"Content-Length: {len(message)}\r\n"
-        response += "\r\n"
-        response += message
+
+    response += "Content-Type: text/html\r\n"
+    response += f"Content-Length: {len(message)}\r\n"
+    response += "\r\n"
+    response += message
+
     return response.encode()

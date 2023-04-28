@@ -2,6 +2,7 @@ import click
 import socket
 import socketserver
 import random
+import json
 from project.handler import RequestHandler
 from project.common import send_all, recv_all
 from rich import print
@@ -100,9 +101,17 @@ def attack(host: str, port: int, count: int) -> None:
         # if the method is POST, add a body, generate a random json payload
         if method == "POST":
             headers["Content-Type"] = "application/json"
-            body = "".join(
-                [chr(random.randint(32, 126))
-                 for _ in range(random.randint(1, 100))]
+            body = json.dumps(
+                {
+                    "".join(
+                        [chr(random.randint(32, 126))
+                         for _ in range(random.randint(1, 10))]
+                    ): "".join(
+                        [chr(random.randint(32, 126))
+                         for _ in range(random.randint(1, 10))]
+                    )
+                    for _ in range(random.randint(1, 10))
+                }
             )
             headers["Content-Length"] = len(body)
 
@@ -111,6 +120,8 @@ def attack(host: str, port: int, count: int) -> None:
         for header in headers.keys():
             request += f"{header}: {headers[header]}\r\n"
         request += "\r\n"
+        if method == "POST":
+            request += body
 
         # send the request
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
