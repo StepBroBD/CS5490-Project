@@ -1,5 +1,11 @@
-curl 'http://127.0.0.1:8000/' \
-	-H 'authority: 127.0.0.1:8000' \
+#!/bin/bash
+
+set -eo pipefail
+
+authority=$(echo $1 | sed -E 's/https?:\/\/([^\/]+)\/.*/\1/')
+
+curl $1 \
+	-H 'authority: '$authority \
 	-H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
 	-H 'accept-language: en-US,en;q=0.9' \
 	-H 'cache-control: max-age=0' \
