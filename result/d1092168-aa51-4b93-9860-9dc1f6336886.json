@@ -1,0 +1,1 @@
+{"id": "d1092168-aa51-4b93-9860-9dc1f6336886", "time": 2.123769998550415, "n": 1001, "true_positives": 27, "false_positives": 5, "true_negatives": 918, "false_negatives": 51, "accuracy": 0.9440559440559441, "detection_rate": 0.34615384615384615, "false_positive_rate": 0.005417118093174431}
