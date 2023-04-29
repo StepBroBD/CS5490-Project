@@ -1,5 +1,6 @@
 import click
 from project.commands.start import start
+from project.commands.plot import plot
 
 
 @click.group()
@@ -19,3 +20,4 @@ def cli() -> None:
 
 
 cli.add_command(start)
+cli.add_command(plot)
