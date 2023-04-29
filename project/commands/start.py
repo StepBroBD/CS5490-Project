@@ -1,8 +1,5 @@
 import click
-import socket
 import socketserver
-import random
-import json
 from project.handler import RequestHandler
 from project.common import send_all, recv_all
 from project.attack import Attack
