@@ -19,7 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 requires-python = ">=3"
-dependencies = ["click", "click-option-group", "rich", "matplotlib"]
+dependencies = ["click", "click-option-group", "rich", "pandas", "matplotlib"]
 
 [project.urls]
 Repository = "https://github.com/StepBroBD/CS5490-Project"
